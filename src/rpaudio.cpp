@@ -1,0 +1,362 @@
+#include "../includes/rpaudio.h"
+
+
+
+using namespace rp;
+
+RosenoernAudio::RosenoernAudio(bool _debug)
+{
+    if(_debug)
+    {
+        debug = 1;
+    }
+    else
+    {
+        debug = 0;
+    }
+}
+void RosenoernAudio::init()
+{
+    bufferCounter = 3;
+    queue = std::vector<AudioFile*>();
+    //Get default audio device
+    int err = 0;
+    freeBuffers = std::vector<int>();
+    for (int i = 0;i < bufferCounter;i++)
+    {
+        freeBuffers.push_back(i);
+    }
+    audioDevice = alcOpenDevice(NULL);  // <--- Usually works :)
+    err = alcGetError(audioDevice);
+    if(err != 0 || debug)
+    {
+     std::cout  << ErrorStrHandler(err) << std::endl;
+    }
+    alGetError();
+    context = alcCreateContext(audioDevice,NULL);
+    if(alcMakeContextCurrent(context) == ALC_TRUE)
+    {
+     std::cout << "Created Context" << std::endl;   
+    }
+    else
+    {
+     std::cout << "Failed to create context" << std::endl;   
+    }
+    CheckErrors();
+    
+
+    buffers = new ALuint[bufferCounter];
+    sources = new ALuint[5];
+    CheckErrors();
+    alGenBuffers(bufferCounter,buffers); // <-- This Though... Pops an error every fucking time - June 23, Finnaly fixed it :D - It was a context issue...
+    CheckErrors();
+    alGenSources(5,sources);
+    CheckErrors();
+    
+    
+}
+RosenoernAudio::~RosenoernAudio()
+{
+    for(uint i = 0; i < queue.size();i++)
+    {
+        delete(queue.at(i));
+    }
+    alDeleteBuffers(bufferCounter,buffers);
+    alDeleteSources(5,sources);
+    context = alcGetCurrentContext();
+    alcGetContextsDevice(context);
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(context);
+    alcCloseDevice(audioDevice);
+    
+}
+AudioFile::AudioFile(std::string _path)
+{
+  path =  _path;
+  if(path.find(".ogg") != std::string::npos)
+  {
+      //Debug
+      std::cout << "File type is ogg" << std::endl;
+      
+      ft = FileType::ogg;
+      os = new ogg_stream_state();
+      
+      FILE* fp = fopen(path.c_str(),"rb");
+      ov_open_callbacks(fp,&vf,NULL,0,OV_CALLBACKS_NOCLOSE);
+      vi = ov_info(&vf,-1);
+      size_t data_len = ov_pcm_total(&vf, -1) * vi->channels * 2;
+      bufferSize = data_len;
+      data = new char[bufferSize];
+      for (size_t size = 0, offset = 0, sel=0; (size = ov_read(&vf, data + offset, 4096, 0, 2, 1, (int*) &sel)) != 0; offset += size) {
+          if(size < 0)
+          {
+           std::cout << "Ogg audio stream is invalid or corrupted" << std::endl;   
+          }
+	}
+	fclose(fp);
+      
+  }
+  else
+  {
+      file = std::ifstream(path,std::ios::binary | std::ios::ate);
+      std::streamsize size = file.tellg();
+      bufferSize = size;
+      file.seekg(0, std::ios::beg);
+      //Debug
+      std::cout << "File type is wav" << std::endl;
+      ft = FileType::wav;
+      os = nullptr;
+      data = new char[bufferSize];
+      file.read(data,size);
+      vi = nullptr;
+      vf = OggVorbis_File();
+      file.close();
+  }
+  
+  
+  //Debug
+  std::cout << "Creating buffer with a size of: " + std::to_string(bufferSize) + " Byte(s)" << std::endl;
+
+  source = 0;
+  buffer = 0;
+  
+};
+AudioFile::~AudioFile()
+{
+   delete(os);
+   delete[]data;
+//    ov_clear(&vf);
+};
+
+AudioFile* RosenoernAudio::GetAudioBase(std::string _path)
+{
+    AudioFile* af = new AudioFile(_path);
+    ALuint buffer = buffers[FindFreeBuffer()];
+    af->buffer = buffer;
+    CheckErrors();
+//     alBufferData(buffers[0],AL_FORMAT_STEREO16,&af->data,sizeof(af->data),af->vi->rate);
+    if(debug)
+    {
+        std::cout << "Reading " + std::to_string(af->bufferSize) + " byte(s) from buffer" << std::endl;
+    }
+    if(af->ft == FileType::ogg)
+    {
+            std::cout << "Clip freq: " << std::to_string(af->vi->rate) << " hz" << std::endl;
+            alBufferData(buffer,AL_FORMAT_STEREO16,af->data,af->bufferSize,af->vi->rate);
+            CheckErrors();
+    }
+    else if (af->ft == FileType::wav)
+    {
+        uint8_t sampleRateData[4];
+        sampleRateData[0] = af->data[24];
+        sampleRateData[1] = af->data[25];
+        sampleRateData[2] = af->data[26];
+        sampleRateData[3] = af->data[27];
+        
+        uint8_t channelsData[2];
+        channelsData[0] = af->data[22];
+        channelsData[1] = af->data[23];
+        
+        unsigned short channels = 0;
+        uint32_t sampleRate = 0;
+        memcpy(&sampleRate, sampleRateData,sizeof(sampleRateData));
+        memcpy(&channels,channelsData, sizeof(channelsData));
+        std::cout << "Clip freq: " << std::to_string(sampleRate) << "hz and is using " << std::to_string(channels) << " channel(s)" << std::endl;
+        
+        if(channels > 1)
+        {
+            alBufferData(buffer,AL_FORMAT_STEREO16,af->data,af->bufferSize,sampleRate);
+        }
+        else
+        {
+            std::cout << "Warning: This clip is in MONO - This can lead to problems if a stero track is being added to the queue`" << std::endl;
+            alBufferData(buffer,AL_FORMAT_MONO16,af->data,af->bufferSize,sampleRate);
+        }
+        CheckErrors();
+           
+        
+    }
+    else
+    {
+     std::cout << "Unsupported fileformat - ignoring - No buffer will be created" << std::endl;
+     af->data = nullptr;
+    }
+    return af;
+}
+
+void RosenoernAudio::LoadBGM(std::string _path, bool async)
+{
+    AudioFile* ab = GetAudioBase(_path);
+    
+    if(async)
+    {
+        //do something async here...
+    }
+    int c = 0;
+    int loop = 0;
+    alGetSourcei(sources[0],AL_LOOPING,&loop);
+    CheckErrors();
+    
+    if(loop != 0)
+    {
+        std::cout << "Looping of BGM disabled" << std::endl;
+        alSourcei(sources[0],AL_LOOPING,0); 
+        CheckErrors();
+    }
+    alGetSourcei(sources[0],AL_BUFFERS_QUEUED,&c);
+    CheckErrors();
+    std::cout << "Current queue is " + std::to_string(c+1) + " long" << std::endl;
+    alSourceQueueBuffers(sources[0],1,&ab->buffer);
+    //alSourcei(sources[0],AL_BUFFER,buffers[0]);
+    CheckErrors();
+    //alSourcePlay(sources[0]);
+    ab->source = sources[0];
+    //return af;
+}
+void RosenoernAudio::AddToQueue(std::string _path)
+{
+   LoadBGM(_path);
+}
+
+std::string RosenoernAudio::ErrorStrHandler(int err)
+{
+    switch(err)
+    {
+        
+        case AL_INVALID_VALUE:
+            return "AL_INVALID_VALUE";
+        break;
+        
+        case 40961:
+            return "AL_INVALID_NAME OR ALC_INVALID_DEVICE";
+        break;
+        
+        case AL_INVALID_OPERATION:
+                return "AL_INVALID_OPERATION";
+        break;
+        
+        case AL_NO_ERROR: 
+            return "AL_NO_ERROR";
+        break;
+        
+        default:
+            std::string error = std::string();
+            error += "UNKNOWN OR UNIMPLEMENTED ERROR - CODE: ";
+            error += std::to_string(err);
+            return error;
+        break;
+    }
+}
+
+void RosenoernAudio::CheckErrors()
+{
+    int err = 0;
+    err = alGetError();
+    if(err != 0 || debug)
+    {
+     std::cout  << ErrorStrHandler(err) << std::endl;
+    }
+}
+void RosenoernAudio::PlayFromQueue()
+{
+    alSourcePlay(sources[0]);
+    
+}
+void RosenoernAudio::PlaySound(std::string _path)
+{
+    AudioFile* ab = GetAudioBase(_path);
+    ab->source = sources[1];
+    alSourcePlay(ab->source);
+}
+//Only work for queue
+void RosenoernAudio::PauseAudio()
+{
+    alSourcePause(sources[0]);
+}
+void RosenoernAudio::ClearBuffer(ALuint* bufPtr, int amount)
+{
+    std::cout << "Entered ClearBuffer()" << std::endl;
+   for(int a = 0; a < amount;a++)
+   {
+    for(int i = 0; i < bufferCounter;i++)
+    {
+        for(int u = 0; u < bufferCounter; u++)
+        {
+            if(bufPtr[a] == buffers[u])
+            {
+                freeBuffers.push_back(u);
+                if(debug)
+                {
+                 std::cout << "Set buffer id: " + std::to_string(u) + " to empty" << std::endl;
+                }
+                return;
+            }
+        }
+    }
+   }
+    std::cout << "Buffer could not be cleared..." << std::endl;
+}
+int RosenoernAudio::FindFreeBuffer()
+{
+    int buf = 0;
+    if(freeBuffers.empty())
+    {
+        std::cout << "Ran out of buffers, Attempting to free an existing buffer" << std::endl;
+        ALint toBeFreed = 0;
+        ALuint* freed = 0;
+        CheckErrors();
+        if(debug)
+        {
+            std::cout << "Pauses and then contunies music to avoid RPAuio bug 1" << std::endl;
+        }
+        alSourcePause(sources[0]);
+        alGetSourcei(sources[0],AL_BUFFERS_PROCESSED,&toBeFreed);
+        alSourcePlay(sources[0]);
+        CheckErrors();
+    
+        if(toBeFreed > 0)
+        {
+            CheckErrors();
+            alSourceUnqueueBuffers(sources[0],toBeFreed,freed); // <--- This bitch crashes every fucking time - LIKE I'VE WORKED ON IT FOR FUCKING DAYS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            CheckErrors();
+            std::cout << "Buffer marked for potential freeing found !!" << std::endl;
+            std::cout << "Attempting to clear buffer!" << std::endl;
+            ClearBuffer(freed,toBeFreed);
+        }
+    }
+
+    try{
+    buf = freeBuffers.at(0);
+    }
+    catch(std::out_of_range ex)
+    {
+          std::cout << "Could not find or clear buffer - CRITICAL ERROR - more info: "; std::cout << ex.what() << std::endl;
+          exit(-1);
+          
+    }
+    freeBuffers.erase(freeBuffers.begin());
+    std::cout << "There is now " << std::to_string(freeBuffers.size()) << " buffers left" << std::endl;
+    return buf;
+}
+/*void RosenoernAudio::Update()
+{
+    ALint toBeFreed = 0;
+    ALuint* freed = 0;
+    alGetSourcei(sources[0],AL_BUFFERS_PROCESSED,&toBeFreed);
+    //CheckErrors();
+    
+    if(toBeFreed > 0 && debug)
+    {
+        alSourceUnqueueBuffers(sources[0],toBeFreed,freed);
+        //CheckErrors();
+        std::cout << "Attempting to clear buffer!" << std::endl;
+        ClearBuffer(freed,toBeFreed);
+    }
+}*/
+
+
+
+
+
+
+

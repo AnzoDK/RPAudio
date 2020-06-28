@@ -79,7 +79,6 @@ AudioFile::AudioFile(std::string _path)
       std::cout << "File type is ogg" << std::endl;
       
       ft = FileType::ogg;
-      os = new ogg_stream_state();
       
       FILE* fp = fopen(path.c_str(),"rb");
       ov_open_callbacks(fp,&vf,NULL,0,OV_CALLBACKS_NOCLOSE);
@@ -105,7 +104,6 @@ AudioFile::AudioFile(std::string _path)
       //Debug
       std::cout << "File type is wav" << std::endl;
       ft = FileType::wav;
-      os = nullptr;
       data = new char[bufferSize];
       file.read(data,size);
       vi = nullptr;
@@ -123,7 +121,6 @@ AudioFile::AudioFile(std::string _path)
 };
 AudioFile::~AudioFile()
 {
-   delete(os);
    delete[]data;
 //    ov_clear(&vf);
 };
@@ -213,6 +210,7 @@ void RosenoernAudio::LoadBGM(std::string _path, bool async)
     //alSourcePlay(sources[0]);
     ab->source = sources[0];
     //return af;
+    //delete(ab);
 }
 void RosenoernAudio::AddToQueue(std::string _path)
 {
@@ -304,7 +302,7 @@ int RosenoernAudio::FindFreeBuffer()
     {
         std::cout << "Ran out of buffers, Attempting to free an existing buffer" << std::endl;
         ALint toBeFreed = 0;
-        ALuint* freed = 0;
+        ALuint freed = 0;
         CheckErrors();
         if(debug)
         {
@@ -312,17 +310,18 @@ int RosenoernAudio::FindFreeBuffer()
         }
         alSourcePause(sources[0]); // <-- Refer to issue 1 for explanation
         alGetSourcei(sources[0],AL_BUFFERS_PROCESSED,&toBeFreed);
-        alSourcePlay(sources[0]);
+        
         CheckErrors();
     
         if(toBeFreed > 0)
         {
             CheckErrors();
-            alSourceUnqueueBuffers(sources[0],toBeFreed,freed); // <--- This bitch crashes every fucking time - LIKE I'VE WORKED ON IT FOR FUCKING DAYS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            alSourceUnqueueBuffers(sources[0],toBeFreed,&freed);
             CheckErrors();
             std::cout << "Buffer marked for potential freeing found !!" << std::endl;
             std::cout << "Attempting to clear buffer!" << std::endl;
-            ClearBuffer(freed,toBeFreed);
+            ClearBuffer(&freed,toBeFreed);
+            alSourcePlay(sources[0]);
         }
     }
 
@@ -339,21 +338,6 @@ int RosenoernAudio::FindFreeBuffer()
     std::cout << "There is now " << std::to_string(freeBuffers.size()) << " buffers left" << std::endl;
     return buf;
 }
-/*void RosenoernAudio::Update()
-{
-    ALint toBeFreed = 0;
-    ALuint* freed = 0;
-    alGetSourcei(sources[0],AL_BUFFERS_PROCESSED,&toBeFreed);
-    //CheckErrors();
-    
-    if(toBeFreed > 0 && debug)
-    {
-        alSourceUnqueueBuffers(sources[0],toBeFreed,freed);
-        //CheckErrors();
-        std::cout << "Attempting to clear buffer!" << std::endl;
-        ClearBuffer(freed,toBeFreed);
-    }
-}*/
 
 
 

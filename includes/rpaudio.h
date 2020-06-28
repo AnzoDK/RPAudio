@@ -49,7 +49,6 @@ namespace rp
         char* data;
         vorbis_info* vi;
         OggVorbis_File vf;
-        ogg_stream_state* os;
         long unsigned int bufferSize;
         FileType ft;
         ALuint source;

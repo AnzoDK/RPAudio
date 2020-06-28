@@ -4,7 +4,7 @@
 
 using namespace rp;
 
-RosenoernAudio::RosenoernAudio(bool _debug)
+RosenoernAudio::RosenoernAudio(bool _debug, int buffers)
 {
     if(_debug)
     {
@@ -14,10 +14,11 @@ RosenoernAudio::RosenoernAudio(bool _debug)
     {
         debug = 0;
     }
+    bufferCounter = buffers;
 }
 void RosenoernAudio::init()
 {
-    bufferCounter = 3;
+    
     queue = std::vector<AudioFile*>();
     //Get default audio device
     int err = 0;
@@ -94,7 +95,7 @@ AudioFile::AudioFile(std::string _path)
           }
 	}
 	fclose(fp);
-    delete(fp);
+    //delete(fp);
       
   }
   else
@@ -125,7 +126,7 @@ AudioFile::~AudioFile()
 {
    delete[]data;
    ov_clear(&vf);
-   delete(vi);
+   //delete(vi);
 };
 
 AudioFile* RosenoernAudio::GetAudioBase(std::string _path)

@@ -58,7 +58,7 @@ namespace rp
     class RosenoernAudio
     {
     public:
-        RosenoernAudio(bool debug=0);
+        RosenoernAudio(bool debug=0, int buffers=3);
         void init();
         void LoadBGM(std::string path, bool async=0);
         void AddToQueue(std::string _path);

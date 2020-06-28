@@ -338,21 +338,6 @@ int RosenoernAudio::FindFreeBuffer()
     std::cout << "There is now " << std::to_string(freeBuffers.size()) << " buffers left" << std::endl;
     return buf;
 }
-/*void RosenoernAudio::Update()
-{
-    ALint toBeFreed = 0;
-    ALuint* freed = 0;
-    alGetSourcei(sources[0],AL_BUFFERS_PROCESSED,&toBeFreed);
-    //CheckErrors();
-    
-    if(toBeFreed > 0 && debug)
-    {
-        alSourceUnqueueBuffers(sources[0],toBeFreed,freed);
-        //CheckErrors();
-        std::cout << "Attempting to clear buffer!" << std::endl;
-        ClearBuffer(freed,toBeFreed);
-    }
-}*/
 
 
 

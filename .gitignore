@@ -1,6 +1,7 @@
 BGM/*
 RPtest
-RP-Audio.kdev4
+RPAudio.kdev4
 *.o
 makefile
 src/test.cpp
+.kdev4

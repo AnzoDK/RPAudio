@@ -68,7 +68,8 @@ RosenoernAudio::~RosenoernAudio()
     alcMakeContextCurrent(NULL);
     alcDestroyContext(context);
     alcCloseDevice(audioDevice);
-    
+    delete[] sources;
+    delete[] buffers;
 }
 AudioFile::AudioFile(std::string _path)
 {
@@ -93,6 +94,7 @@ AudioFile::AudioFile(std::string _path)
           }
 	}
 	fclose(fp);
+    delete(fp);
       
   }
   else
@@ -122,7 +124,8 @@ AudioFile::AudioFile(std::string _path)
 AudioFile::~AudioFile()
 {
    delete[]data;
-//    ov_clear(&vf);
+   ov_clear(&vf);
+   delete(vi);
 };
 
 AudioFile* RosenoernAudio::GetAudioBase(std::string _path)
@@ -210,7 +213,7 @@ void RosenoernAudio::LoadBGM(std::string _path, bool async)
     //alSourcePlay(sources[0]);
     ab->source = sources[0];
     //return af;
-    //delete(ab);
+    delete(ab);
 }
 void RosenoernAudio::AddToQueue(std::string _path)
 {

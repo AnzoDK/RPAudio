@@ -65,7 +65,6 @@ namespace rp
         void PlayFromQueue();
         void PlaySound(std::string _path);
         void PauseAudio();
-        //void Update();
         ~RosenoernAudio();
     private:
         std::vector<AudioFile*> queue;

@@ -199,6 +199,7 @@ void RosenoernAudio::LoadBGM(std::string _path, bool async)
     
     if(loop != 0)
     {
+        //We can't have looping when we use more than one buffer
         std::cout << "Looping of BGM disabled" << std::endl;
         alSourcei(sources[0],AL_LOOPING,0); 
         CheckErrors();
@@ -309,7 +310,7 @@ int RosenoernAudio::FindFreeBuffer()
         {
             std::cout << "Pauses and then contunies music to avoid RPAuio bug 1" << std::endl;
         }
-        alSourcePause(sources[0]);
+        alSourcePause(sources[0]); // <-- Refer to issue 1 for explanation
         alGetSourcei(sources[0],AL_BUFFERS_PROCESSED,&toBeFreed);
         alSourcePlay(sources[0]);
         CheckErrors();

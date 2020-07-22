@@ -226,7 +226,7 @@ AudioFile* RosenoernAudio::GetAudioBase(std::string _path)
            
         
     }
-    else if(af->ft == FileType::mp3) //<-- Seems to have a bug that only play just about 1/2 of the audio file if its 3 min long (suspects the buffer can only hold about 1:30 stereo) - Please refer to GitHub issue 2
+    else if(af->ft == FileType::mp3) //<-- Seems to have a bug that only play just about 1/2 of the audio file if its 3 min long (suspects the buffer can only hold about 1:30 stereo) - Please refer to GitHub issue #4
     {
         static mp3dec_t dec;
         mp3dec_init(&dec);

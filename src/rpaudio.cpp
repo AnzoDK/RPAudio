@@ -96,7 +96,7 @@ AudioFile::AudioFile(std::string _path)
       size_t data_len = ov_pcm_total(&vf, -1) * vi->channels * 2;
       bufferSize = data_len;
       data = new uint8_t[bufferSize];
-      char* tmpbuf = reinterpret_cast<char*>(data);
+      char* tmpbuf = new char[bufferSize];
       for (size_t size = 0, offset = 0, sel=0; (size = ov_read(&vf, tmpbuf + offset, 4096, 0, 2, 1, (int*) &sel)) != 0; offset += size) {
           if(size < 0)
           {
@@ -104,7 +104,10 @@ AudioFile::AudioFile(std::string _path)
           }
 	}
 	fclose(fp);
-    data = reinterpret_cast<uint8_t*>(tmpbuf);
+        for(unsigned int i = 0; i < bufferSize; i++)
+        {
+          data[i] = tmpbuf[i];
+        }
     delete[] tmpbuf;
     //delete(fp);
       
@@ -122,7 +125,10 @@ AudioFile::AudioFile(std::string _path)
         char* tmpbuf = new char[bufferSize];
         file.read(tmpbuf,size);
         file.close();
-        data = reinterpret_cast<uint8_t*>(tmpbuf);
+        for(unsigned int i = 0; i < bufferSize; i++)
+        {
+          data[i] = tmpbuf[i];
+        }
         delete[] tmpbuf;
         
     }
@@ -139,7 +145,7 @@ AudioFile::AudioFile(std::string _path)
       char* tmpbuf = new char[bufferSize];
       file.read(tmpbuf,size);
       file.close();
-      for(int i = 0; i < bufferSize; i++)
+      for(unsigned int i = 0; i < bufferSize; i++)
       {
          data[i] = tmpbuf[i];
       }

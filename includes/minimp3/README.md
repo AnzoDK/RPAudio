@@ -1,4 +1,4 @@
-minimp3
+[minimp3](https://github.com/lieff/minimp3)
 ==========
 
 [![Build Status](https://travis-ci.org/lieff/minimp3.svg)](https://travis-ci.org/lieff/minimp3)

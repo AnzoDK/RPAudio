@@ -8,6 +8,8 @@
  * 
  * It will be easier to modify if those two facts are to be unchanged.
  * 
+ * 
+ * Datasheet located at http://mpgedit.org/mpgedit/mpeg_format/MP3Format.html for mp3 format
  */
 
 
@@ -22,7 +24,7 @@
 #define WIDTH 7
 #endif
 
-#ifndef _WIN32_
+#ifndef _WIN32
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -38,7 +40,8 @@
 #include <AL/alc.h> 
 namespace rp
 {
-    enum FileType{ogg,wav};
+    enum FileType{ogg,wav,mp3};
+    
     
     struct AudioFile
     {
@@ -46,7 +49,7 @@ namespace rp
         ~AudioFile();
         std::string path;
         std::ifstream file;
-        char* data;
+        uint8_t* data;
         vorbis_info* vi;
         OggVorbis_File vf;
         long unsigned int bufferSize;
@@ -80,6 +83,7 @@ namespace rp
         int FindFreeBuffer();
         void ClearBuffer(ALuint* bufPtr,int amount);
         AudioFile* GetAudioBase(std::string _path);
+        std::vector<AudioFile*> playingQueue;
     };
     
 }

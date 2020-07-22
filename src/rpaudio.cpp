@@ -1,9 +1,12 @@
 #include "../includes/rpaudio.h"
+#include "../includes/commontools.h"
+#define MINIMP3_IMPLEMENTATION
+#include "../includes/minimp3/minimp3_ex.h"
+
 
 
 
 using namespace rp;
-
 RosenoernAudio::RosenoernAudio(bool _debug, int buffers)
 {
     if(_debug)
@@ -18,7 +21,10 @@ RosenoernAudio::RosenoernAudio(bool _debug, int buffers)
 }
 void RosenoernAudio::init()
 {
-    
+    playingQueue = std::vector<AudioFile*>();
+    //RosenoernAudio::mp3d = mp3dec_t();
+    //Init 3'rd party mp3 lib
+    //mp3dec_init(&RosenoernAudio::mp3d);
     queue = std::vector<AudioFile*>();
     //Get default audio device
     int err = 0;
@@ -56,6 +62,8 @@ void RosenoernAudio::init()
     
     
 }
+
+
 RosenoernAudio::~RosenoernAudio()
 {
     for(uint i = 0; i < queue.size();i++)
@@ -87,17 +95,37 @@ AudioFile::AudioFile(std::string _path)
       vi = ov_info(&vf,-1);
       size_t data_len = ov_pcm_total(&vf, -1) * vi->channels * 2;
       bufferSize = data_len;
-      data = new char[bufferSize];
-      for (size_t size = 0, offset = 0, sel=0; (size = ov_read(&vf, data + offset, 4096, 0, 2, 1, (int*) &sel)) != 0; offset += size) {
+      data = new uint8_t[bufferSize];
+      char* tmpbuf = reinterpret_cast<char*>(data);
+      for (size_t size = 0, offset = 0, sel=0; (size = ov_read(&vf, tmpbuf + offset, 4096, 0, 2, 1, (int*) &sel)) != 0; offset += size) {
           if(size < 0)
           {
            std::cout << "Ogg audio stream is invalid or corrupted" << std::endl;   
           }
 	}
 	fclose(fp);
+    data = reinterpret_cast<uint8_t*>(tmpbuf);
+    delete[] tmpbuf;
     //delete(fp);
       
   }
+      else if(path.find(".mp3") != std::string::npos)
+    {
+        ft = FileType::mp3;
+        std::cout << "Filetype is MP3" << std::endl;
+        //This may only work for decoding old mp3's
+        file = std::ifstream(path,std::ios::binary | std::ios::ate);
+        std::streamsize size = file.tellg();
+        bufferSize = size;
+        file.seekg(0, std::ios::beg);
+        data = new uint8_t[bufferSize];
+        char* tmpbuf = new char[bufferSize];
+        file.read(tmpbuf,size);
+        file.close();
+        data = reinterpret_cast<uint8_t*>(tmpbuf);
+        delete[] tmpbuf;
+        
+    }
   else
   {
       file = std::ifstream(path,std::ios::binary | std::ios::ate);
@@ -107,11 +135,17 @@ AudioFile::AudioFile(std::string _path)
       //Debug
       std::cout << "File type is wav" << std::endl;
       ft = FileType::wav;
-      data = new char[bufferSize];
-      file.read(data,size);
+      data = new uint8_t[bufferSize];
+      char* tmpbuf = new char[bufferSize];
+      file.read(tmpbuf,size);
+      file.close();
+      for(int i = 0; i < bufferSize; i++)
+      {
+         data[i] = tmpbuf[i];
+      }
+      delete[] tmpbuf;
       vi = nullptr;
       vf = OggVorbis_File();
-      file.close();
   }
   
   
@@ -124,10 +158,19 @@ AudioFile::AudioFile(std::string _path)
 };
 AudioFile::~AudioFile()
 {
-   delete[]data;
+   if(data != nullptr)
+   {
+       delete[] data;
+   }
    ov_clear(&vf);
+   
+   //free(reinterpret_cast<mp3dec_file_info_t*>(mp3Info)->buffer);
    //delete(vi);
 };
+
+
+
+
 
 AudioFile* RosenoernAudio::GetAudioBase(std::string _path)
 {
@@ -177,6 +220,28 @@ AudioFile* RosenoernAudio::GetAudioBase(std::string _path)
            
         
     }
+    else if(af->ft == FileType::mp3) //<-- Seems to have a bug that only play just about 1/2 of the audio file if its 3 min long (suspects the buffer can only hold about 1:30 stereo) - Please refer to GitHub issue 2
+    {
+        static mp3dec_t dec;
+        mp3dec_init(&dec);
+        mp3dec_file_info_t mp3Info;
+        mp3dec_load(&dec,af->path.c_str(),&mp3Info, NULL, NULL);
+        
+        std::cout << "Freq: " << std::to_string(mp3Info.hz) << "Hz. - AVG. kbit/s rate: " << std::to_string(mp3Info.avg_bitrate_kbps) << " Kbits/s (if 192 then it might really be a 320kbit)"<< std::endl;
+        //std::cout << "Freq: " << std::to_string(decoder.info.hz) << "Hz. - AVG. kbit/s rate: " << std::to_string(decoder.info.bitrate_kbps) << " Kbits/s"<< std::endl;
+        int channels = 0;
+        if(mp3Info.channels == 2)
+        {
+            channels = AL_FORMAT_STEREO16;
+        }
+        else
+        {
+            channels = AL_FORMAT_MONO16;
+        }
+        
+        alBufferData(buffer,channels,mp3Info.buffer,mp3Info.samples,mp3Info.hz);
+        
+    }
     else
     {
      std::cout << "Unsupported fileformat - ignoring - No buffer will be created" << std::endl;
@@ -214,7 +279,11 @@ void RosenoernAudio::LoadBGM(std::string _path, bool async)
     //alSourcePlay(sources[0]);
     ab->source = sources[0];
     //return af;
-    delete(ab);
+    if(ab->ft == FileType::mp3)
+    {
+         ab->data = 0;   
+    }
+    playingQueue.push_back(ab);
 }
 void RosenoernAudio::AddToQueue(std::string _path)
 {
@@ -291,6 +360,13 @@ void RosenoernAudio::ClearBuffer(ALuint* bufPtr, int amount)
                 if(debug)
                 {
                  std::cout << "Set buffer id: " + std::to_string(u) + " to empty" << std::endl;
+                 for(unsigned int c = 0; c < playingQueue.size();c++)
+                 {
+                     if(playingQueue.at(c)->buffer == buffers[u])
+                     {
+                         playingQueue.erase(playingQueue.begin()+c-1);
+                     }
+                 }
                 }
                 return;
             }

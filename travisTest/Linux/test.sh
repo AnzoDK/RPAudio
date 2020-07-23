@@ -1,5 +1,7 @@
 #!/bin/bash
 #Linux
+LD_LIBRARY_PATH=./include/ogg:./include/libopenal:./include/vorbis:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH;
 make test
 mkdir audio
 cd audio

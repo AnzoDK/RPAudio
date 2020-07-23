@@ -26,10 +26,6 @@
 #endif
 
 #ifndef _WIN32
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
 #endif
 #include <iostream>

@@ -4,7 +4,7 @@ INCLUDES := -I./includes
 CXX_FLAGS := -Wall -std=c++17 -pthread
 C_FLAGS := -Wall
 DEBUG := -g3
-EX := ""
+EX := 
 LINKER_OPTIONS := -lopenal -lvorbisfile
 OBJECTS := test.o rpaudio.o commontools.o
 SRC := ./src

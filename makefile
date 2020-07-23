@@ -7,6 +7,7 @@ DEBUG := -g3
 EX := 
 LINKER_OPTIONS := -lopenal -lvorbisfile
 OBJECTS := test.o rpaudio.o commontools.o
+TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 SRC := ./src
 
 

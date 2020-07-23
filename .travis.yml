@@ -23,6 +23,7 @@ addons:
       - mingw-w64
       - gcc-mingw-w64-x86-64 
       - g++-mingw-w64-x86-64
+      - wine
 
 os:
     - linux

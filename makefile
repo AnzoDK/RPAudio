@@ -4,17 +4,18 @@ INCLUDES := -I./includes
 CXX_FLAGS := -Wall -std=c++17 -pthread
 C_FLAGS := -Wall
 DEBUG := -g3
+EX := ""
 LINKER_OPTIONS := -lopenal -lvorbisfile
 OBJECTS := test.o rpaudio.o commontools.o
 SRC := ./src
 
 
 release: test.o
-	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) -o RPtest $(LINKER_OPTIONS)
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) -o RPtest$(EX) $(LINKER_OPTIONS)
 	make clean
 
 test: rptest.o
-	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) -o RPtest $(LINKER_OPTIONS)
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) -o RPtest$(EX) $(LINKER_OPTIONS)
 	make clean
 
 rptest.o: rpaudio.o

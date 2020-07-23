@@ -2,7 +2,7 @@
 #Linux
 export LD_RUN_PATH=$(pwd)/include/ogg:$(pwd)/include/libopenal:$(pwd)/include/vorbis
 make test
-mkdir audio
+mkdir -p audio
 cd audio
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.mp3" --output mp3.mp3
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_10MG.wav" --output wav.wav

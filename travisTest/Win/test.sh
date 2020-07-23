@@ -9,8 +9,8 @@ curl "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.m
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_10MG.wav" --output wav.wav
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_5MG.ogg" -- output ogg.ogg
 cd ..
-rptest --async --mp3
-rptest --mp3
-rptest --wav
-rptest --ogg
+wine rptest.exe --async --mp3
+wine rptest.exe --mp3
+wine rptest.exe --wav
+wine rptest.exe --ogg
 

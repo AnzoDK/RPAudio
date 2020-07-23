@@ -16,7 +16,7 @@ release: test.o
 	make clean
 
 test: rptest.o
-	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) -o RPtest$(EX) $(LINKER_OPTIONS)
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(TEST_OBJECTS) -o RPtest$(EX) $(LINKER_OPTIONS)
 	make clean
 
 rptest.o: rpaudio.o

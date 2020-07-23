@@ -32,5 +32,5 @@ compiler:
     - g++
 
 script:
-    - travisTest/Windows/test.sh
+    - travisTest/Win/test.sh
     - travisTest/Linux/test.sh

@@ -22,6 +22,7 @@
 
 #define DIV 1048576 
 #define WIDTH 7
+#define sleep Sleep
 #endif
 
 #ifndef _WIN32
@@ -37,7 +38,7 @@
 #include "ogg/ogg.h"
 #include "vorbis/vorbisfile.h"
 #include "libopenal/al.h"
-#include "libopenal/alc.h" 
+#include "libopenal/alc.h"
 namespace rp
 {
     enum FileType{ogg,wav,mp3};

@@ -20,10 +20,12 @@ addons:
       - g++-8
       - qemu
       - lcov
+      - mingw-w64
+      - gcc-mingw-w64-x86-64 
+      - g++-mingw-w64-x86-64
 
 os:
     - linux
-    - win32
 
 compiler:
     - g++

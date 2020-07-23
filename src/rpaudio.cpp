@@ -66,7 +66,7 @@ void RosenoernAudio::init()
 
 RosenoernAudio::~RosenoernAudio()
 {
-    for(uint i = 0; i < queue.size();i++)
+    for(unsigned int i = 0; i < queue.size();i++)
     {
         delete(queue.at(i));
     }

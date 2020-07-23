@@ -8,7 +8,8 @@ EX :=
 LINKER_OPTIONS := -lopenal -lvorbisfile
 OBJECTS := test.o rpaudio.o commontools.o
 TEST_OBJECTS := rpaudio.o commontools.o rptest.o
-SO_DIRS := -L./includes/ogg -L./includes/libopenal -L./includes/vorbis -Wl,-rpath=./includes/
+#SO_DIRS := -L./includes/ogg -L./includes/libopenal -L./includes/vorbis -Wl,-rpath=./includes/
+SO_DIRS := 
 SRC := ./src
 
 

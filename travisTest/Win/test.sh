@@ -1,7 +1,6 @@
 #!/bin/bash
 #Windows
-LD_LIBRARY_PATH=./include/ogg:./include/libopenal:./include/vorbis:${LD_LIBRARY_PATH}
-export LD_LIBRARY_PATH;
+export LD_RUN_PATH=$(pwd)/include/ogg:$(pwd)/include/libopenal:$(pwd)/include/vorbis
 make test CXX=x86_64-w64-mingw32-g++ EX=.exe
 mkdir audio
 cd audio

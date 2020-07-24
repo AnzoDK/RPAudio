@@ -22,7 +22,7 @@
 
 #define DIV 1048576 
 #define WIDTH 7
-#define sleep Sleep
+#define usleep Sleep
 #define TIMECONVERT 100
 #endif
 

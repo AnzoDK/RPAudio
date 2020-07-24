@@ -1,7 +1,5 @@
 #!/bin/bash
 #Linux
-export LD_RUN_PATH=$(pwd)/includes/ogg:$(pwd)/includes/libopenal:$(pwd)/includes/vorbis
-echo $(pwd)/includes/vorbis
 make test
 mkdir -p audio
 cd audio

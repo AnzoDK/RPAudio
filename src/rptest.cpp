@@ -44,6 +44,6 @@ int main(int arcs, char* argv[])
         
     }
     ra->PlayFromQueue();
-    sleep(180*tests.size());
+    usleep(180*tests.size()*TIMECONVERT);
     return 0;
 }

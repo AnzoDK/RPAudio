@@ -23,10 +23,12 @@
 #define DIV 1048576 
 #define WIDTH 7
 #define sleep Sleep
+#define TIMECONVERT 100
 #endif
 
 #ifndef _WIN32
-
+#define TIMECONVERT 1000
+#include <unistd.h>
 #endif
 #include <iostream>
 #include <vector>

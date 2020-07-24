@@ -1,4 +1,4 @@
-CXX := g++
+CXX := g++-9
 CC := gcc
 INCLUDES := -I./includes
 CXX_FLAGS := -Wall -std=c++17 -pthread

@@ -1,6 +1,6 @@
 #!/bin/bash
 #Linux
-make test
+make test CXX=$CXX
 mkdir -p audio
 cd audio
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.mp3" --output mp3.mp3

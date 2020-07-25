@@ -33,7 +33,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "ogg/ogg.h"
+#include <ogg/ogg.h>
 #include "vorbis/vorbisfile.h"
 #include "libopenal/al.h"
 #include "libopenal/alc.h"

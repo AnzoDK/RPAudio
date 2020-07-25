@@ -34,6 +34,7 @@ then
     echo "Passed!"
 else
     echo "Failed!"
+    exit 1
 fi
 ./RPtest --wav
 if [ $? -eq 0 ]
@@ -41,6 +42,7 @@ then
     echo "Passed!"
 else
     echo "Failed!"
+    exit 1
 fi
 ./RPtest --ogg
 if [ $? -eq 0 ]
@@ -48,4 +50,5 @@ then
     echo "Passed!"
 else
     echo "Failed!"
+    exit 1
 fi

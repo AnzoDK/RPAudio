@@ -10,7 +10,8 @@ LINKER_OPTIONS :=
 OBJECTS := test.o rpaudio.o commontools.o
 TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 #SO_DIRS := -L./includes/ogg -L./includes/libopenal -L./includes/vorbis
-SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -lopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -lvorbisfile
+#SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -lopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -lvorbisfile
+LIBS := ./includes/libopenal/libopenal.so.1 ./includes/vorbis/libvorbisfile.so.3
 SRC := ./src
 
 

@@ -17,7 +17,7 @@ addons:
       - libc6-powerpc-cross
       - libc6-dev-arm64-cross
       - libc6-dev-powerpc-cross
-      - g++-8
+      - g++
       - qemu
       - lcov
       - mingw-w64
@@ -31,7 +31,7 @@ os:
     - linux
 
 compiler:
-    - g++-8
+    - g++
 
 script:
     - travisTest/Win/test.sh

@@ -1,6 +1,6 @@
 #!/bin/bash
 #Linux
-$Comp=0
+$Comp=g++
 g++ --version
 g++-9 --version
 if [ $? -eq 0 ]
@@ -9,7 +9,6 @@ then
     $Comp=g++9
 else
     echo "g++-9 does not work! - defaulting to g++"
-    $Comp=g++
 fi
 make test CXX=$Comp
 mkdir -p audio

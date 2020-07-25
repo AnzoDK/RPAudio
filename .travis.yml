@@ -17,7 +17,7 @@ addons:
       - libc6-powerpc-cross
       - libc6-dev-arm64-cross
       - libc6-dev-powerpc-cross
-      - g++
+      - g++-9
       - qemu
       - lcov
       - mingw-w64

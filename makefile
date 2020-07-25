@@ -25,13 +25,13 @@ test: rptest.o
 	make clean
 
 rptest.o: rpaudio.o
-	$(CXX) -c $(CXX_FLAGS) $(DEBUG) $(SRC)/rptest.cpp $(LIBS) -o rptest.o $(SO_DIRS) $(LINKER_OPTIONS)
+	$(CXX) -c $(CXX_FLAGS) $(DEBUG) $(SRC)/rptest.cpp -o rptest.o $(SO_DIRS) $(LINKER_OPTIONS)
 
 test.o: rpaudio.o 
-	$(CXX) -c $(CXX_FLAGS) $(DEBUG) $(SRC)/test.cpp $(LIBS) -o test.o $(SO_DIRS) $(LINKER_OPTIONS)
+	$(CXX) -c $(CXX_FLAGS) $(DEBUG) $(SRC)/test.cpp -o test.o $(SO_DIRS) $(LINKER_OPTIONS)
 
 rpaudio.o: commontools.o
-	$(CXX) -c $(CXX_FLAGS) $(DEBUG) $(SRC)/rpaudio.cpp $(LIBS) -o rpaudio.o $(SO_DIRS) $(LINKER_OPTIONS)
+	$(CXX) -c $(CXX_FLAGS) $(DEBUG) $(SRC)/rpaudio.cpp -o rpaudio.o $(SO_DIRS) $(LINKER_OPTIONS)
 
 commontools.o:
 	$(CXX) -c $(CXX_FLAGS) $(DEBUG) $(SRC)/commontools.cpp -o commontools.o $(SO_DIRS) $(LINKER_OPTIONS)

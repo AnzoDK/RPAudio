@@ -6,7 +6,7 @@ g++-9 --version
 if [ $? -eq 0 ]
 then
     echo "g++-9 works!"
-    Comp=g++9
+    Comp=g++-9
 else
     echo "g++-9 does not work! - defaulting to g++"
 fi

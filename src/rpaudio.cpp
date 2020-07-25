@@ -38,6 +38,10 @@ void RosenoernAudio::init()
     if(err != 0 || debug)
     {
      std::cout  << ErrorStrHandler(err) << std::endl;
+     if(err == 40965)
+     {
+         std::cout << "This Usually happen when testing the lib with travis - continueing to test the decode capabilities - Ignore all the AL errors" << std::endl;
+     }
     }
     alGetError();
     context = alcCreateContext(audioDevice,NULL);
@@ -66,7 +70,7 @@ void RosenoernAudio::init()
 
 RosenoernAudio::~RosenoernAudio()
 {
-    for(uint i = 0; i < queue.size();i++)
+    for(unsigned int i = 0; i < queue.size();i++)
     {
         delete(queue.at(i));
     }
@@ -315,6 +319,10 @@ std::string RosenoernAudio::ErrorStrHandler(int err)
         
         case AL_NO_ERROR: 
             return "AL_NO_ERROR";
+        break;
+        
+        case 40965:
+            return "COULD NOT FIND AUDIO DEVICE";
         break;
         
         default:

@@ -7,3 +7,4 @@
 - Remind myself that bits are fun, until you read them wrong and wonder where in the *redacted* code it went wrong
 - ~~Add support for mp3 extensions (instead of just ignoring them...)~~ Done (Same as goal 2)
 - ~~add Mp3 bitrate lookuptable based on http://mpgedit.org/mpgedit/mpeg_format/MP3Format.html~~ Done (Same as goal 2)
+- Change OpenAL to [OpenAL-soft](https://github.com/kcat/openal-soft)

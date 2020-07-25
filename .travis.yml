@@ -1,0 +1,33 @@
+dist: focal
+language: c++
+addons:
+  apt:
+    packages:
+      - build-essential
+      - linux-libc-dev
+      - gcc-arm-none-eabi
+      - libnewlib-arm-none-eabi
+      - gcc-7-multilib
+      - gcc-aarch64-linux-gnu
+      - gcc-powerpc-linux-gnu
+      - libc6-arm64-cross
+      - libc6-powerpc-cross
+      - libc6-dev-arm64-cross
+      - libc6-dev-powerpc-cross
+      - g++-9
+      - lcov
+      - mingw-w64
+      - gcc-mingw-w64-x86-64 
+      - g++-mingw-w64-x86-64
+      - libogg-dev
+      - tree
+      - libsndio-dev
+
+os:
+    - linux
+
+compiler:
+    - g++
+
+script:
+    - travisTest/Linux/test.sh

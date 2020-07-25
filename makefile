@@ -5,8 +5,8 @@ CXX_FLAGS := -Wall -std=c++17 -pthread
 C_FLAGS := -Wall
 DEBUG := -g3
 EX := 
-#LINKER_OPTIONS := -lopenal -lvorbisfile
-LINKER_OPTIONS :=
+LINKER_OPTIONS := -lopenal -lvorbisfile
+#LINKER_OPTIONS :=
 OBJECTS := test.o rpaudio.o commontools.o
 TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 #SO_DIRS := -L./includes/ogg -L./includes/libopenal -L./includes/vorbis

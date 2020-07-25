@@ -1,6 +1,17 @@
 #!/bin/bash
 #Linux
-make test CXX=$CXX
+$Comp=0
+g++ --version
+g++-9 --version
+if [ $? -eq 0 ]
+then
+    echo "g++-9 works!"
+    $Comp=g++9
+else
+    echo "g++-9 does not work! - defaulting to g++"
+    $Comp=g++
+fi
+make test CXX=$Comp
 mkdir -p audio
 cd audio
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.mp3" --output mp3.mp3

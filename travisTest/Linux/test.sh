@@ -54,3 +54,4 @@ else
     echo "Failed!"
     exit 1
 fi
+echo "Filetypes Mp3, Wav and Ogg was decoded successfully!"

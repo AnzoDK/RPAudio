@@ -21,6 +21,7 @@ addons:
       - g++-mingw-w64-x86-64
       - libogg-dev
       - tree
+      - libsndio-dev
 
 os:
     - linux

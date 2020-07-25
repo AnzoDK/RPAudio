@@ -22,6 +22,30 @@ curl "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_10MG.
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_5MG.ogg" --output ogg.ogg
 cd ..
 ./rptest --async --mp3
+if [ $? -eq 0 ]
+then
+    echo "Passed!"
+else
+    echo "Failed!"
+fi
 ./rptest --mp3
+if [ $? -eq 0 ]
+then
+    echo "Passed!"
+else
+    echo "Failed!"
+fi
 ./rptest --wav
+if [ $? -eq 0 ]
+then
+    echo "Passed!"
+else
+    echo "Failed!"
+fi
 ./rptest --ogg
+if [ $? -eq 0 ]
+then
+    echo "Passed!"
+else
+    echo "Failed!"
+fi

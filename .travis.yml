@@ -20,6 +20,7 @@ addons:
       - gcc-mingw-w64-x86-64 
       - g++-mingw-w64-x86-64
       - libogg-dev
+      - tree
 
 os:
     - linux

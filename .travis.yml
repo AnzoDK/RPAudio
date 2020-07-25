@@ -22,7 +22,6 @@ addons:
       - libogg-dev
       - tree
       - libsndio-dev
-      - ldd
 
 os:
     - linux

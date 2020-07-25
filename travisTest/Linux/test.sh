@@ -1,18 +1,16 @@
 #!/bin/bash
 #Linux
-$Comp
-$Comp=g++
+Comp=g++
 g++ --version
 g++-9 --version
 if [ $? -eq 0 ]
 then
     echo "g++-9 works!"
-    $Comp=g++9
+    Comp=g++9
 else
     echo "g++-9 does not work! - defaulting to g++"
 fi
-$old
-$old=$(pwd)
+old=$(pwd)
 cd /
 tree -f | grep "ogg/ogg.h"
 cd $old

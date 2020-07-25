@@ -4,7 +4,6 @@ addons:
   apt:
     packages:
       - build-essential
-      - libc6-dev-i386
       - linux-libc-dev:i386
       - gcc-arm-none-eabi
       - libnewlib-arm-none-eabi

@@ -4,7 +4,7 @@ addons:
   apt:
     packages:
       - build-essential
-      - linux-libc-dev:i386
+      - linux-libc-dev
       - gcc-arm-none-eabi
       - libnewlib-arm-none-eabi
       - gcc-7-multilib
@@ -15,13 +15,11 @@ addons:
       - libc6-dev-arm64-cross
       - libc6-dev-powerpc-cross
       - g++-9
-      - qemu
       - lcov
       - mingw-w64
       - gcc-mingw-w64-x86-64 
       - g++-mingw-w64-x86-64
       - wine-stable
-      - wine32
       - libogg-dev
 
 os:

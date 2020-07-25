@@ -1,5 +1,6 @@
 #!/bin/bash
 #Linux
+$Comp
 $Comp=g++
 g++ --version
 g++-9 --version
@@ -10,9 +11,11 @@ then
 else
     echo "g++-9 does not work! - defaulting to g++"
 fi
+$old
 $old=$(pwd)
 cd /
 tree -f | grep "ogg/ogg.h"
+cd $old
 make test CXX=$Comp
 mkdir -p audio
 cd audio

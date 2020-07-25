@@ -10,6 +10,9 @@ then
 else
     echo "g++-9 does not work! - defaulting to g++"
 fi
+$old=$(pwd)
+cd /
+tree -f | grep "ogg/ogg.h"
 make test CXX=$Comp
 mkdir -p audio
 cd audio

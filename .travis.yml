@@ -19,7 +19,6 @@ addons:
       - mingw-w64
       - gcc-mingw-w64-x86-64 
       - g++-mingw-w64-x86-64
-      - wine-stable
       - libogg-dev
 
 os:
@@ -29,5 +28,4 @@ compiler:
     - g++
 
 script:
-    - travisTest/Win/test.sh
     - travisTest/Linux/test.sh

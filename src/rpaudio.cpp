@@ -40,7 +40,7 @@ void RosenoernAudio::init()
      std::cout  << ErrorStrHandler(err) << std::endl;
      if(err == 40965)
      {
-         std::cout << "This Usually happen when testing the lib with travis - continueing to test the decode capabilities" << std::endl;
+         std::cout << "This Usually happen when testing the lib with travis - continueing to test the decode capabilities - Ignore all the AL errors" << std::endl;
      }
     }
     alGetError();

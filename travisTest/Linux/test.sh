@@ -21,6 +21,7 @@ curl "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.m
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_10MG.wav" --output wav.wav
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_OOG_5MG.ogg" --output ogg.ogg
 cd ..
+ldd ./RPtest
 ./RPtest --async --mp3
 if [ $? -eq 0 ]
 then

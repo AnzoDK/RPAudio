@@ -5,8 +5,9 @@ CXX_FLAGS := -Wall -std=c++17 -pthread
 C_FLAGS := -Wall
 DEBUG := -g3
 EX := 
-LINKER_OPTIONS := -lopenal -lvorbisfile
-#LINKER_OPTIONS :=
+#LINKER_OPTIONS := -lopenal -lvorbisfile
+LINKER_OPTIONS :=
+FINAL_LINKER := -lopenal -lvorbisfile
 OBJECTS := test.o rpaudio.o commontools.o
 TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 #SO_DIRS := -L./includes/ogg -L./includes/libopenal -L./includes/vorbis
@@ -18,7 +19,7 @@ SRC := ./src
 
 
 release: test.o
-	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) -o RPtest$(EX) $(SO_DIRS) $(LINKER_OPTIONS)
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) -o RPtest$(EX) $(SO_DIRS) $(FINAL_LINKER)
 	make clean
 
 test: rptest.o

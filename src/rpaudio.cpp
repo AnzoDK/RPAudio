@@ -223,7 +223,7 @@ AudioFile* RosenoernAudio::GetAudioBase(std::string _path)
         }
         else
         {
-            std::cout << "Warning: This clip is in MONO - This can lead to problems if a stero track is being added to the queue`" << std::endl;
+            std::cout << "Warning: This clip is in MONO - This can lead to problems if a stero track is being added to the queue" << std::endl;
             alBufferData(buffer,AL_FORMAT_MONO16,af->data,af->bufferSize,sampleRate);
         }
         CheckErrors();
@@ -237,7 +237,7 @@ AudioFile* RosenoernAudio::GetAudioBase(std::string _path)
         mp3dec_file_info_t mp3Info;
         mp3dec_load(&dec,af->path.c_str(),&mp3Info, NULL, NULL);
         
-        std::cout << "Freq: " << std::to_string(mp3Info.hz) << "Hz. - AVG. kbit/s rate: " << std::to_string(mp3Info.avg_bitrate_kbps) << " Kbits/s (if 192 then it might really be a 320kbit)"<< std::endl;
+        std::cout << "Freq: " << std::to_string(mp3Info.hz) << "Hz. - AVG. kbit/s rate: " << std::to_string(mp3Info.avg_bitrate_kbps) << " Kbits/s"<< std::endl;
         //std::cout << "Freq: " << std::to_string(decoder.info.hz) << "Hz. - AVG. kbit/s rate: " << std::to_string(decoder.info.bitrate_kbps) << " Kbits/s"<< std::endl;
         int channels = 0;
         if(mp3Info.channels == 2)
@@ -249,7 +249,7 @@ AudioFile* RosenoernAudio::GetAudioBase(std::string _path)
             channels = AL_FORMAT_MONO16;
         }
         
-        alBufferData(buffer,channels,mp3Info.buffer,mp3Info.samples,mp3Info.hz);
+        alBufferData(buffer,channels,mp3Info.buffer,mp3Info.samples*sizeof(mp3d_sample_t),mp3Info.hz);
         
     }
     else

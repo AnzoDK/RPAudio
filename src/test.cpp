@@ -12,8 +12,9 @@ std::string readCin()
 
 int main(int arcs, char* argv[])
 {
-    std::string path = std::string("");
+    std::vector<std::string> paths = std::vector<std::string>();
     bool debug = 0;
+    bool readAsPaths = 0;
     for(int i = 1; i < arcs;i++)
     {
         std::string arg = argv[i];
@@ -21,17 +22,24 @@ int main(int arcs, char* argv[])
         {
             debug = 1;
         }
-        if(arg == "-p")
+        else if(arg == "-p")
         {
-            path = argv[i+1];
+            readAsPaths = 1;
             
+        }
+        else if(readAsPaths)
+        {
+            paths.push_back(std::string(argv[i]));
         }
     }
     rp::RosenoernAudio* ra = new rp::RosenoernAudio(debug,10);
     ra->init();
-    if(path != "")
+    for(unsigned int i = 0; i < paths.size();i++)
     {
-        ra->AddToQueue(path);
+        if(paths.at(i) != "")
+    {
+        ra->AddToQueue(paths.at(i));
+    }
     }
     
     bool run = 1;

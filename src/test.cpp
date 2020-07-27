@@ -25,6 +25,7 @@ int main(int arcs, char* argv[])
     }
     
     rp::RosenoernAudio* ra = new rp::RosenoernAudio(debug,10);
+    ra->init();
     
     bool run = 1;
     

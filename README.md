@@ -10,3 +10,8 @@
 
 ### How to use
 - No clue - But for now you can test its capabilities with the included test program. Build the test program with the BuildTest.sh script. Now run RPtest. A terminal window will now popup and all you have to do is type the path of a either .wav .mp3 or .ogg file and it will play it back for you. Type exit to exit it
+
+### IT WON'T COMPILE!!!
+- Then you may need the debian packages:
+-- libogg-dev
+-- libsndio-dev

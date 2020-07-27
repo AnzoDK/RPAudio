@@ -41,7 +41,6 @@ int main(int arcs, char* argv[])
         ra->AddToQueue(paths.at(i));
     }
     }
-    
     bool run = 1;
     bool playing = 0;
     

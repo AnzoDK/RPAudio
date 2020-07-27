@@ -9,12 +9,22 @@ then
     Comp=g++-9
 else
     echo "g++-9 does not work! - defaulting to g++"
+    g++ --version
+    if [ $? -ne 0 ]
+    then
+        echo "No g++ version found"
+        exit 1
+    fi
+    
 fi
-old=$(pwd)
-cd /
-tree -f | grep "ogg/ogg.h"
-cd $old
+ldd --version
+if [ $? -ne 0 ]
+then
+    echo "ldd could not be found"
+    exit 1
+fi
 make test CXX=$Comp
+chmod +x ./RPtest
 mkdir -p audio
 cd audio
 curl "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.mp3" --output mp3.mp3

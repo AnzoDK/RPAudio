@@ -2,5 +2,4 @@ BGM/*
 RPtest
 RPAudio.kdev4
 *.o
-src/test.cpp
 .kdev4

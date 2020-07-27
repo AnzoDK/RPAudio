@@ -13,5 +13,5 @@
 
 ### IT WON'T COMPILE!!!
 - Then you may need the debian packages:
--- libogg-dev
--- libsndio-dev
+- - libogg-dev
+- - libsndio-dev

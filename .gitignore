@@ -2,4 +2,5 @@ BGM/*
 RPtest
 RPAudio.kdev4
 *.o
+audio/*
 .kdev4

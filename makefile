@@ -9,7 +9,7 @@ EX :=
 LINKER_OPTIONS :=
 #FINAL_LINKER := -lopenal -lvorbisfile
 FINAL_LINKER :=
-OBJECTS := test.o rpaudio.o commontools.o
+# OBJECTS := rpaudio.o commontools.o test.o
 TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 #SO_DIRS := -L./includes/ogg -L./includes/libopenal -L./includes/vorbis
 SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis
@@ -21,7 +21,7 @@ SRC := ./src
 
 
 release: test.o
-	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) -o RPtest$(EX) $(SO_DIRS) $(FINAL_LINKER)
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) $(DEBUG) $(OBJECTS) $(LIBS) -o RPtest$(EX) $(SO_DIRS) $(FINAL_LINKER)
 	make clean
 
 test: rptest.o

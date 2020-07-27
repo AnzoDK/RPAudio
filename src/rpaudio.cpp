@@ -299,6 +299,12 @@ void RosenoernAudio::AddToQueue(std::string _path)
 {
    LoadBGM(_path);
 }
+int RosenoernAudio::GetQueueLength()
+{
+  int c = 0;
+  alGetSourcei(sources[0],AL_BUFFERS_QUEUED,&c);
+  return c;
+}
 
 std::string RosenoernAudio::ErrorStrHandler(int err)
 {

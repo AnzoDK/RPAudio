@@ -64,6 +64,7 @@ namespace rp
         void init();
         void LoadBGM(std::string path, bool async=0);
         void AddToQueue(std::string _path);
+        int GetQueueLength();
         void PlayFromQueue();
         void PlaySound(std::string _path);
         void PauseAudio();

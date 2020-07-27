@@ -33,7 +33,6 @@ int main(int arcs, char* argv[])
     {
         ra->AddToQueue(path);
     }
-    
     bool run = 1;
     bool playing = 0;
     

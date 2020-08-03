@@ -29,11 +29,12 @@
 #ifndef _WIN32
 #define TIMECONVERT 1000
 #include <unistd.h>
+#include <string>
 #endif
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "ogg/ogg.h"
+#include "oggvorbis/ogg.h"
 #include "vorbisfile/vorbisfile.h"
 #include "libopenal/al.h"
 #include "libopenal/alc.h"

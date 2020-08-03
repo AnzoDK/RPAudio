@@ -1,5 +1,5 @@
 #!/bin/bash
-#Linux
+#Linux - LIB
 Comp=g++
 g++ --version
 g++-9 --version
@@ -23,8 +23,6 @@ then
     echo "ldd could not be found"
     exit 1
 fi
-make CXX=$Comp OS=Linux
-chmod +x ./RPtest
-mkdir -p audio
-ldd ./RPtest
+make CXX=$Comp OS=Linux LIB=1
+ldd ./RPAudio.so
 

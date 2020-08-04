@@ -23,7 +23,7 @@ addons:
       - tree
       - libsndio-dev
       - libvorbis-dev
-      - openal-dev
+      - libopenal-dev
 
 os:
     - linux

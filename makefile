@@ -19,8 +19,8 @@ TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 #SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -lopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -lvorbisfile
 #SO_DIRS :=
 ifeq ($(OS), Linux)
-LIBS := ./includes/libopenal/libopenal.so.1 ./includes/vorbisfile/libvorbisfile.so.3 ./includes/oggvorbis/libogg.so.0
-SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis
+LIBS := ./includes/libopenal/libopenal.so.1 ./includes/vorbisfile/libvorbisfile.so.3 ./includes/oggvorbis/libogg.so.0 ./includes/libsndio/libsndio.so.7.0
+SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis -Wl,-rpath,./includes/libsndio -L./includes/libsndio
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
 endif
@@ -42,8 +42,8 @@ release: test.o
 
 lib: rpaudio.o
 	$(CXX) $(CXX_FLAGS_LIB) $(INCLUDES) $(DEBUG) $(OBJECTS_LIB) $(LIBS) -o RPAudio.so$(EX) $(SO_DIRS) $(FINAL_LINKER)
-	ar rcs RPAudio.a RPAudio.so
-	-rm RPAudio.so
+	#ar rcs RPAudio.a RPAudio.so
+	#-rm RPAudio.so
 	make clean
 
 test: rptest.o

@@ -23,6 +23,6 @@ then
     echo "ldd could not be found"
     exit 1
 fi
-make CXX=$Comp OS=Linux LIB=1
+make lib CXX=$Comp OS=Linux LIB=1
 ldd ./RPAudio.so
 

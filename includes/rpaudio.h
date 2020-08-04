@@ -34,10 +34,10 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "oggvorbis/ogg.h"
-#include "vorbisfile/vorbisfile.h"
-#include "libopenal/al.h"
-#include "libopenal/alc.h"
+#include <ogg/ogg.h>
+#include <vorbis/vorbisfile.h>
+#include <AL/al.h>
+#include <AL/alc.h>
 namespace rp
 {
     enum FileType{ogg,wav,mp3};

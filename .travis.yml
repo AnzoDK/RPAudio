@@ -22,6 +22,8 @@ addons:
       - libogg-dev
       - tree
       - libsndio-dev
+      - libvorbis-dev
+      - openal-dev
 
 os:
     - linux

@@ -82,6 +82,8 @@ namespace rp
         std::string ErrorStrHandler(int err);
         void CheckErrors();
         int FindFreeBuffer();
+        int FindFreeSource();
+        std::vector<int> GetPlayingSources();
         void ClearBuffer(ALuint* bufPtr,int amount);
         AudioFile* GetAudioBase(std::string _path);
         std::vector<AudioFile*> playingQueue;

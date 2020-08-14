@@ -2,7 +2,7 @@
 #include "../includes/commontools.h"
 #define MINIMP3_IMPLEMENTATION
 #include "../includes/minimp3/minimp3_ex.h"
-
+#define sourceCount 5
 
 
 
@@ -57,11 +57,11 @@ void RosenoernAudio::init()
     
 
     buffers = new ALuint[bufferCounter];
-    sources = new ALuint[5];
+    sources = new ALuint[sourceCount];
     CheckErrors();
     alGenBuffers(bufferCounter,buffers); // <-- This Though... Pops an error every fucking time - June 23, Finnaly fixed it :D - It was a context issue...
     CheckErrors();
-    alGenSources(5,sources);
+    alGenSources(sourceCount,sources);
     CheckErrors();
     
     
@@ -266,7 +266,7 @@ void RosenoernAudio::LoadBGM(std::string _path, bool async)
     
     if(async)
     {
-        //do something async here...
+        //its already async
     }
     int c = 0;
     int loop = 0;
@@ -356,8 +356,16 @@ void RosenoernAudio::PlayFromQueue()
 }
 void RosenoernAudio::PlaySound(std::string _path)
 {
+    int buffNr = 0;
+    buffNr = FindFreeSource();
+    if(buffNr == -1)
+    {
+        std::cout << "No Free Source could be found - Adding to first soundeffect players queue" << std::endl;
+        buffNr = 1;
+    }
     AudioFile* ab = GetAudioBase(_path);
-    ab->source = sources[1];
+    ab->source = sources[buffNr];
+    alSourceQueueBuffers(sources[buffNr],1,&ab->buffer);
     alSourcePlay(ab->source);
 }
 //Only work for queue
@@ -408,20 +416,30 @@ int RosenoernAudio::FindFreeBuffer()
         {
             std::cout << "Pauses and then contunies music to avoid RPAuio bug 1" << std::endl;
         }
-        alSourcePause(sources[0]); // <-- Refer to issue 1 for explanation
-        alGetSourcei(sources[0],AL_BUFFERS_PROCESSED,&toBeFreed);
-        
-        CheckErrors();
-    
-        if(toBeFreed > 0)
+        std::vector<int> playing = GetPlayingSources();
+        for(int i = 0; i < playing.size();i++)// <-- Refer to issue 1 for explanation
         {
+            alSourcePause(sources[playing.at(i)]);
+        }
+        for(int i = 0; i < bufferCounter;i++)
+        {
+
+            alGetSourcei(sources[i],AL_BUFFERS_PROCESSED,&toBeFreed);
             CheckErrors();
-            alSourceUnqueueBuffers(sources[0],toBeFreed,&freed);
-            CheckErrors();
-            std::cout << "Buffer marked for potential freeing found !!" << std::endl;
-            std::cout << "Attempting to clear buffer!" << std::endl;
-            ClearBuffer(&freed,toBeFreed);
-            alSourcePlay(sources[0]);
+            if(toBeFreed > 0)
+            {
+                CheckErrors();
+                alSourceUnqueueBuffers(sources[i],toBeFreed,&freed);
+                CheckErrors();
+                std::cout << "Buffer marked for potential freeing found !!" << std::endl;
+                std::cout << "Attempting to clear buffer!" << std::endl;
+                ClearBuffer(&freed,toBeFreed);
+                alSourcePlay(sources[i]);
+            }
+        }
+        for(int i = 0; i < playing.size();i++)
+        {
+            alSourcePlay(sources[playing.at(i)]);
         }
     }
 
@@ -437,6 +455,46 @@ int RosenoernAudio::FindFreeBuffer()
     freeBuffers.erase(freeBuffers.begin());
     std::cout << "There is now " << std::to_string(freeBuffers.size()) << " buffers left" << std::endl;
     return buf;
+}
+int RosenoernAudio::FindFreeSource()
+{
+    ALint state = 0;
+    int source = 0;
+    bool resolved = false;
+    for(int i = 0; i < sourceCount;i++)
+    {
+        
+        alGetSourcei(sources[i],AL_SOURCE_STATE,&state);
+        if(state == AL_STOPPED || state == AL_INITIAL)
+        {
+            source = i;
+            resolved = true;
+            break;
+        }
+    }
+    if(resolved)
+    {
+        return source;
+    }
+    else
+    {
+      return -1;  
+    }
+}
+std::vector<int> RosenoernAudio::GetPlayingSources()
+{
+    std::vector<int> playing = std::vector<int>();
+    int state = 0;
+    for(int i = 0; i < sourceCount;i++)
+    {
+        
+        alGetSourcei(sources[i],AL_SOURCE_STATE,&state);
+        if(state == AL_PLAYING)
+        {
+            playing.push_back(i);
+        }
+    }
+    return playing;
 }
 
 

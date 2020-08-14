@@ -32,7 +32,7 @@ int main(int arcs, char* argv[])
             paths.push_back(std::string(argv[i]));
         }
     }
-    rp::RosenoernAudio* ra = new rp::RosenoernAudio(debug,10);
+    rp::RosenoernAudio* ra = new rp::RosenoernAudio(debug,3);
     ra->init();
     for(unsigned int i = 0; i < paths.size();i++)
     {
@@ -60,7 +60,7 @@ int main(int arcs, char* argv[])
      }
      else if(input != "")
      {
-       ra->AddToQueue(input);
+       ra->PlaySound(input);
      }
      if(!playing && (ra->GetQueueLength() != 0))
      {

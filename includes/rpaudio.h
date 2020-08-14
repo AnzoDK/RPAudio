@@ -29,14 +29,15 @@
 #ifndef _WIN32
 #define TIMECONVERT 1000
 #include <unistd.h>
+#include <string>
 #endif
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <ogg/ogg.h>
-#include "vorbis/vorbisfile.h"
-#include "libopenal/al.h"
-#include "libopenal/alc.h"
+#include <vorbis/vorbisfile.h>
+#include <AL/al.h>
+#include <AL/alc.h>
 namespace rp
 {
     enum FileType{ogg,wav,mp3};
@@ -81,6 +82,8 @@ namespace rp
         std::string ErrorStrHandler(int err);
         void CheckErrors();
         int FindFreeBuffer();
+        int FindFreeSource();
+        std::vector<int> GetPlayingSources();
         void ClearBuffer(ALuint* bufPtr,int amount);
         AudioFile* GetAudioBase(std::string _path);
         std::vector<AudioFile*> playingQueue;

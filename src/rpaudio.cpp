@@ -75,7 +75,7 @@ RosenoernAudio::~RosenoernAudio()
         delete(queue.at(i));
     }
     alDeleteBuffers(bufferCounter,buffers);
-    alDeleteSources(5,sources);
+    alDeleteSources(sourceCount,sources);
     context = alcGetCurrentContext();
     alcGetContextsDevice(context);
     alcMakeContextCurrent(NULL);

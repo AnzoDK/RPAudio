@@ -36,7 +36,7 @@ FINAL_LINKER := -lOpenAL32 -lvorbisfile -logg
 CXX_FLAGS +=
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
-CXX_FLAGS_LIB := -shared
+CXX_FLAGS_LIB := -shared -static-libstdc++
 FINAL_LINKER += -Wl,--out-implib,librpaudio.a
 CXX_FLAGS += -DBUILDING_EXAMPLE_DLL
 EX := .dll
@@ -52,8 +52,6 @@ release: test.o
 
 lib: rpaudio.o
 	$(CXX) $(CXX_FLAGS_LIB) $(INCLUDES) $(DEBUG) $(OBJECTS_LIB) $(LIBS) -o RPAudio$(EX) $(SO_DIRS) $(FINAL_LINKER)
-	#ar rcs RPAudio.a RPAudio.so
-	#-rm RPAudio.so
 	make clean
 
 test: rptest.o

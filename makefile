@@ -51,7 +51,7 @@ release: test.o
 
 
 lib: rpaudio.o
-	$(CXX) $(CXX_FLAGS_LIB) $(INCLUDES) $(DEBUG) $(OBJECTS_LIB) $(LIBS) -o RPAudio$(EX) $(SO_DIRS) $(FINAL_LINKER)
+	$(CXX) $(CXX_FLAGS_LIB) $(INCLUDES) $(DEBUG) $(OBJECTS_LIB) $(LIBS) -o rpaudio$(EX) $(SO_DIRS) $(FINAL_LINKER)
 	make clean
 
 test: rptest.o

@@ -5,7 +5,7 @@ x86_64-w64-mingw32-g++ --version &> /dev/null
 if [ $? -eq 0 ]
 then
     echo "x86_64-w64-mingw32-g++ Works!!"
-    Comp=g++-9
+    Comp=x86_64-w64-mingw32-g++
 else
     echo "x86_64-w64-mingw32-g++ does not work - please install it before compiling"
     exit 1

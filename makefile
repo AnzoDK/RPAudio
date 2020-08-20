@@ -36,7 +36,7 @@ FINAL_LINKER := -lOpenAL32 -lvorbisfile -logg
 CXX_FLAGS +=
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
-CXX_FLAGS_LIB := -shared -static-libstdc++ -static-libgcc
+CXX_FLAGS_LIB := -shared
 FINAL_LINKER += -Wl,--out-implib,librpaudio.a
 CXX_FLAGS += -DBUILDING_EXAMPLE_DLL
 EX := .dll

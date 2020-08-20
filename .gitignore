@@ -5,4 +5,8 @@ RPAudio.kdev4
 audio/*
 .kdev4
 RPAudio.so
+librpaudio.so
 RPAudio.a
+*.a
+*.dll
+

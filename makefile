@@ -25,6 +25,7 @@ ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
 SO_DIRS += -Wl,-rpath,./includes/libsndio -L./includes/libsndio
 LIBS += ./includes/libsndio/libsndio.so.7.0
+EX := .so
 endif
 endif
 
@@ -32,7 +33,14 @@ ifeq ($(OS), Windows)
 SO_DIRS := -Wl,-Bdynamic -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis
 #LIBS := ./includes/vorbisfile/libvorbisfile.dll ./includes/oggvorbis/libogg.dll ./includes/vorbis/libvorbis.dll
 FINAL_LINKER := -lopenal -lvorbisfile -lvorbis -logg
-CXX_FLAGS += -m32 -Wl,--subsystem,windows -mwindows -DWINVER=0x0400 -D__WIN95__ -D__GNUWIN32__ -DSTRICT -DHAVE_W32API_H -D__WXMSW__ -D__WINDOWS__
+CXX_FLAGS +=
+ifeq ($(LIB), 1)
+LIB_OPTIONS := -fPIC
+CXX_FLAGS_LIB := -shared
+FINAL_LINKER += -Wl,--out-implib,librpaudio.a
+CXX_FLAGS += -DBUILDING_EXAMPLE_DLL
+EX := .dll
+endif
 endif
 SRC := ./src
 
@@ -43,7 +51,7 @@ release: test.o
 
 
 lib: rpaudio.o
-	$(CXX) $(CXX_FLAGS_LIB) $(INCLUDES) $(DEBUG) $(OBJECTS_LIB) $(LIBS) -o RPAudio.so$(EX) $(SO_DIRS) $(FINAL_LINKER)
+	$(CXX) $(CXX_FLAGS_LIB) $(INCLUDES) $(DEBUG) $(OBJECTS_LIB) $(LIBS) -o RPAudio$(EX) $(SO_DIRS) $(FINAL_LINKER)
 	#ar rcs RPAudio.a RPAudio.so
 	#-rm RPAudio.so
 	make clean

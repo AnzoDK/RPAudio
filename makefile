@@ -32,7 +32,7 @@ endif
 ifeq ($(OS), Windows)
 SO_DIRS := -Wl,-Bdynamic -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis
 #LIBS := ./includes/vorbisfile/libvorbisfile.dll ./includes/oggvorbis/libogg.dll ./includes/vorbis/libvorbis.dll
-FINAL_LINKER := -lopenal -lvorbisfile -logg
+FINAL_LINKER := -lopenal -logg
 CXX_FLAGS +=
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC

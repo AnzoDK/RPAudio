@@ -32,12 +32,12 @@ endif
 ifeq ($(OS), Windows)
 SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-Bdynamic -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis
 #LIBS := ./includes/vorbisfile/libvorbisfile.dll ./includes/oggvorbis/libogg.dll ./includes/vorbis/libvorbis.dll
-FINAL_LINKER := -lOpenAL32 -libvorbis -logg
+FINAL_LINKER := -lOpenAL32 -libvorbisfile -logg
 CXX_FLAGS +=
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
-CXX_FLAGS_LIB := -shared
-FINAL_LINKER += -Wl,--out-implib,librpaudio.a
+CXX_FLAGS_LIB := --shared
+FINAL_LINKER += -lstdc++ -Wl,--out-implib,librpaudio.a
 CXX_FLAGS += -DBUILDING_EXAMPLE_DLL
 EX := .dll
 endif
@@ -51,9 +51,7 @@ release: test.o
 
 
 lib: rpaudio.o
-	$(CXX) $(CXX_FLAGS_LIB) $(INCLUDES) $(DEBUG) $(OBJECTS_LIB) $(LIBS) -o RPAudio$(EX) $(SO_DIRS) $(FINAL_LINKER)
-	#ar rcs RPAudio.a RPAudio.so
-	#-rm RPAudio.so
+	$(CXX) $(CXX_FLAGS_LIB) $(INCLUDES) $(DEBUG) $(OBJECTS_LIB) $(LIBS) -o rpaudio$(EX) $(SO_DIRS) $(FINAL_LINKER)
 	make clean
 
 test: rptest.o

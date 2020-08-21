@@ -23,5 +23,4 @@ then
     echo "Make failed..."
     exit 1
 fi
-ldd ./RPAudio.dll
 

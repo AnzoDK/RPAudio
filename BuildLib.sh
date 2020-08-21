@@ -24,5 +24,5 @@ then
     exit 1
 fi
 make lib CXX=$Comp OS=Linux LIB=1
-ldd ./RPAudio.so
+ldd ./rpaudio.so
 

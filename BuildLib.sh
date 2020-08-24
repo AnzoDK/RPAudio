@@ -1,15 +1,15 @@
 #!/bin/bash
 #Linux - LIB
 Comp=g++
-g++ --version
-g++-9 --version
+g++ --version &> /dev/null
+g++-9 --version &> /dev/null
 if [ $? -eq 0 ]
 then
     echo "g++-9 works!"
     Comp=g++-9
 else
     echo "g++-9 does not work! - defaulting to g++"
-    g++ --version
+    g++ --version  &> /dev/null
     if [ $? -ne 0 ]
     then
         echo "No g++ version found"
@@ -17,7 +17,7 @@ else
     fi
     
 fi
-ldd --version
+ldd --version  &> /dev/null
 if [ $? -ne 0 ]
 then
     echo "ldd could not be found"

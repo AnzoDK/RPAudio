@@ -7,6 +7,7 @@ audio/*
 RPAudio.so
 librpaudio.so
 RPAudio.a
+RPAudio.dll
 *.a
-*.dll
+
 

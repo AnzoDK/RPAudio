@@ -30,8 +30,9 @@ endif
 endif
 
 ifeq ($(OS), Windows)
-SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-Bdynamic -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis
+SO_DIRS := -Wl,-rpath,./ -L./ -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-Bdynamic -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis
 #LIBS := ./includes/vorbisfile/libvorbisfile.dll ./includes/oggvorbis/libogg.dll ./includes/vorbis/libvorbis.dll
+LIBS := libvorbisfile-3.dll
 FINAL_LINKER := -lOpenAL32 -logg 
 #FINAL_LINKER += -lvorbisfile
 CXX_FLAGS +=

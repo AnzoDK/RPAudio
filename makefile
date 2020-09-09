@@ -32,12 +32,12 @@ endif
 ifeq ($(OS), Windows)
 SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-Bdynamic -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis
 #LIBS := ./includes/vorbisfile/libvorbisfile.dll ./includes/oggvorbis/libogg.dll ./includes/vorbis/libvorbis.dll
-FINAL_LINKER := -lOpenAL32 -lvorbisfile -logg
+FINAL_LINKER := -lOpenAL32 -logg -lvorbisfile-3
 CXX_FLAGS +=
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
 CXX_FLAGS_LIB := --shared
-FINAL_LINKER += -lstdc++ -Wl,--out-implib,librpaudio.a
+FINAL_LINKER += -lstdc++ -Wl,--out-implib,librpaudio.a 
 CXX_FLAGS += -DBUILDING_EXAMPLE_DLL
 EX := .dll
 endif

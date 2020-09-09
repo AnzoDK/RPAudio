@@ -32,7 +32,8 @@ endif
 ifeq ($(OS), Windows)
 SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-Bdynamic -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis
 #LIBS := ./includes/vorbisfile/libvorbisfile.dll ./includes/oggvorbis/libogg.dll ./includes/vorbis/libvorbis.dll
-FINAL_LINKER := -lOpenAL32 -logg -lvorbisfile-3
+FINAL_LINKER := -lOpenAL32 -logg 
+#FINAL_LINKER += -lvorbisfile
 CXX_FLAGS +=
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC

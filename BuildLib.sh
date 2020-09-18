@@ -1,5 +1,7 @@
 #!/bin/bash
 #Linux - LIB
+DebugLevel="DEBUG=-g3"
+
 Comp=g++
 g++ --version &> /dev/null
 g++-9 --version &> /dev/null
@@ -23,6 +25,6 @@ then
     echo "ldd could not be found"
     exit 1
 fi
-make lib CXX=$Comp OS=Linux LIB=1
+make lib $DebugLevel CXX=$Comp OS=Linux LIB=1
 ldd ./rpaudio.so
 

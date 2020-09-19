@@ -6,3 +6,4 @@ audio/*
 .kdev4
 RPAudio.so
 RPAudio.a
+rpaudio.so

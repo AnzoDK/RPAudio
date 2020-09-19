@@ -23,6 +23,11 @@ then
     echo "ldd could not be found"
     exit 1
 fi
+if [ "$1" == "--optimize" ]
+then
+    make lib CXX=$Comp DEBUG=-O2 OS=Linux LIB=1
+else
 make lib CXX=$Comp OS=Linux LIB=1
+fi
 ldd ./RPAudio.so
 

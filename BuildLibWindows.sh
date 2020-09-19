@@ -17,7 +17,12 @@ then
     echo "ldd could not be found"
     exit 1
 fi
-make lib CXX=$Comp OS=Windows LIB=1
+if [ "$1" == "--optimize" ]
+then
+    make lib CXX=$Comp DEBUG=-O2 OS=Windows LIB=1
+else
+    make lib CXX=$Comp OS=Windows LIB=1
+fi
 if [ $? -ne 0 ]
 then
     echo "Make failed..."

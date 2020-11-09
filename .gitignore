@@ -9,5 +9,5 @@ librpaudio.so
 RPAudio.a
 RPAudio.dll
 *.a
-rpaudio.so
+./rpaudio.so
 

@@ -19,13 +19,13 @@ TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 #SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -lopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -lvorbisfile
 #SO_DIRS :=
 ifeq ($(OS), Linux)
-LIBS := ./includes/libopenal/libopenal.so.1 ./includes/vorbisfile/libvorbisfile.so.3 ./includes/oggvorbis/libogg.so.0
+LIBS := ./includes/vorbisfile/libvorbisfile.so.3 ./includes/oggvorbis/libogg.so.0
 SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis 
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
 #libsndio.so.7.0 is no longer available on ArchLinux - We should build against a version > 7
-SO_DIRS += -Wl,-rpath,./includes/libsndio -L./includes/libsndio
-LIBS += ./includes/libsndio/libsndio.so.7.0
+#SO_DIRS += -Wl,-rpath,./includes/libsndio -L./includes/libsndio
+#LIBS += ./includes/libsndio/libsndio.so.7.0
 EX := .so
 endif
 endif

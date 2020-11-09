@@ -31,5 +31,5 @@ then
 else
 make lib CXX=$Comp OS=Linux LIB=1
 fi
-ldd ./RPAudio.so
+#ldd ./RPAudio.so
 

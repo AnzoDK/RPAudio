@@ -23,6 +23,7 @@ LIBS := ./includes/libopenal/libopenal.so.1 ./includes/vorbisfile/libvorbisfile.
 SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis 
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
+#libsndio.so.7.0 is no longer available on ArchLinux - We should build against a version > 7
 SO_DIRS += -Wl,-rpath,./includes/libsndio -L./includes/libsndio
 LIBS += ./includes/libsndio/libsndio.so.7.0
 EX := .so

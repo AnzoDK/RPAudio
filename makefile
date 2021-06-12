@@ -9,6 +9,7 @@ EX :=
 OS :=Linux
 LINKER_OPTIONS :=
 LIB :=
+USE_SYS_LIBS:=0
 #FINAL_LINKER := -lopenal -lvorbisfile
 #FINAL_LINKER := -lvorbis
 OBJECTS := rpaudio.o commontools.o test.o
@@ -19,8 +20,12 @@ TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 #SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -lopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -lvorbisfile
 #SO_DIRS :=
 ifeq ($(OS), Linux)
+ifeq ($(USE_SYS_LIBS), 1)
+FINAL_LINKER+=-lopenal -logg
+else
 LIBS := ./includes/libopenal/libopenal.so.1.21.0 ./includes/vorbisfile/libvorbisfile.so.3 ./includes/oggvorbis/libogg.so.0
 SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis 
+endif
 ifeq ($(LIB), 1)
 LIB_OPTIONS := -fPIC
 #libsndio.so.7.0 is no longer available on ArchLinux - We should build against a version > 7

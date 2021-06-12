@@ -8,7 +8,9 @@ DEBUG := -g3
 EX := 
 OS :=Linux
 LINKER_OPTIONS :=
-LIB :=
+LIB :=0
+LIBS:=
+SO_DIRS:=
 USE_SYS_LIBS:=0
 #FINAL_LINKER := -lopenal -lvorbisfile
 #FINAL_LINKER := -lvorbis
@@ -21,7 +23,7 @@ TEST_OBJECTS := rpaudio.o commontools.o rptest.o
 #SO_DIRS :=
 ifeq ($(OS), Linux)
 ifeq ($(USE_SYS_LIBS), 1)
-FINAL_LINKER+=-lopenal -logg
+FINAL_LINKER+=-lopenal -logg -lvorbisfile
 else
 LIBS := ./includes/libopenal/libopenal.so.1.21.0 ./includes/vorbisfile/libvorbisfile.so.3 ./includes/oggvorbis/libogg.so.0
 SO_DIRS := -Wl,-rpath,./includes/libopenal -L./includes/libopenal -Wl,-rpath,./includes/vorbis -L./includes/vorbis -Wl,-rpath,./includes/vorbisfile -L./includes/vorbisfile -Wl,-rpath,./includes/oggvorbis -L./includes/oggvorbis 

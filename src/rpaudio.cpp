@@ -5,7 +5,6 @@
 #define sourceCount 5
 
 
-
 using namespace rp;
 RosenoernAudio::RosenoernAudio(bool _debug, int buffers)
 {
@@ -110,7 +109,7 @@ AudioFile::AudioFile(std::string _path, Logger& logger, bool debug)
       
       ft = FileType::ogg;
       
-      FILE* fp = fopen(path.c_str(),"rb");
+      C_FILE* fp = fopen(path.c_str(),"rb");
       ov_open_callbacks(fp,&vf,NULL,0,OV_CALLBACKS_NOCLOSE);
       vi = ov_info(&vf,-1);
       size_t data_len = ov_pcm_total(&vf, -1) * vi->channels * 2;

@@ -38,8 +38,10 @@
 #include <vorbis/vorbisfile.h>
 #include <AL/al.h>
 #include <AL/alc.h>
+
 namespace rp
 {
+    typedef _IO_FILE C_FILE;
     enum FileType{ogg,wav,mp3};
     enum LoggerTarget{TERMINAL,FILE};
     

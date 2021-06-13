@@ -31,7 +31,8 @@ void RosenoernAudio::SetDebugState(bool state)
 
 void RosenoernAudio::SetDebugPrefix(std::string _prefix)
 {
-    m_debugPrefix = _prefix;
+    m_debugPrefix = _prefix; //??? why even do this????
+    m_logger->SetPrefix(_prefix);
 }
 
 void RosenoernAudio::init()

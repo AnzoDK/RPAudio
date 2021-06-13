@@ -41,11 +41,61 @@
 namespace rp
 {
     enum FileType{ogg,wav,mp3};
+    enum LoggerTarget{TERMINAL,FILE};
     
+    class Logger
+    {
+    public:
+        Logger(bool printState,LoggerTarget target)
+        {
+            m_printState = printState;
+            m_target = target;
+        }
+        Logger(bool printState, LoggerTarget target, std::string logPath)
+        {
+            m_printState = printState;
+            m_logPath = logPath;
+            m_target = target;
+        }
+        void Log(std::string str, bool ignoreState=0)
+        {
+            if(m_target == LoggerTarget::TERMINAL)
+            {
+                if(m_printState || ignoreState)
+                {
+                    std::cout << m_prefix << str << std::endl;
+                }
+            }
+            else if(m_target == LoggerTarget::FILE)
+            {
+                //We don't care about printState if we are printing to a file
+                std::ofstream out = std::ofstream(m_logPath, std::ios::out | std::ios::ate);
+                out << m_prefix << str << std::endl;
+                out.close();
+            }
+        }
+        void SetPrefix(std::string prefix)
+        {
+            m_prefix = prefix;
+        }
+        void SetState(bool state)
+        {
+            m_printState = state;
+        }
+        void SetTarget(LoggerTarget target)
+        {
+            m_target = target;
+        }
+    private:
+        bool m_printState;
+        std::string m_logPath = "./RPAudioLog.log";
+        std::string m_prefix = "";
+        LoggerTarget m_target;
+    };
     
     struct AudioFile
     {
-        AudioFile(std::string path);
+        AudioFile(std::string path, Logger& logger, bool debug=0);
         ~AudioFile();
         std::string path;
         std::ifstream file;
@@ -63,12 +113,15 @@ namespace rp
     public:
         RosenoernAudio(bool debug=0, int buffers=3);
         void init();
+        void SetDebugState(bool state);
+        void SetDebugMode(LoggerTarget target);
         void LoadBGM(std::string path, bool async=0);
         void AddToQueue(std::string _path);
         int GetQueueLength();
         void PlayFromQueue();
         void PlaySound(std::string _path);
         void PauseAudio();
+        void SetDebugPrefix(std::string _prefix);
         ~RosenoernAudio();
     private:
         std::vector<AudioFile*> queue;
@@ -87,6 +140,8 @@ namespace rp
         void ClearBuffer(ALuint* bufPtr,int amount);
         AudioFile* GetAudioBase(std::string _path);
         std::vector<AudioFile*> playingQueue;
+        std::string m_debugPrefix = "";
+        Logger* m_logger;
     };
     
 }

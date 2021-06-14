@@ -15,3 +15,9 @@
 - Then you may need the debian packages:
 - - libogg-dev
 - - libsndio-dev
+#### Running Arch? (Nice)
+- Then you'll need:
+- - openal
+- - libogg
+- - libvorbis
+On Arch you can also download the PKGBUILD (as usual check it for any errors before installing it) which is provided in this repo

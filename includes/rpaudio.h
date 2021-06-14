@@ -71,10 +71,11 @@ namespace rp
             else if(m_target == LoggerTarget::FILE)
             {
                 //We don't care about printState if we are printing to a file
-                std::ofstream out = std::ofstream(m_logPath, std::ios::out | std::ios::ate);
+                std::ofstream out = std::ofstream(m_logPath, std::ios::out | std::ios::app);
                 std::string finalStr = std::string (m_prefix + str + "\n");
                 out.write(finalStr.c_str(),finalStr.length());
                 //out << m_prefix << str << std::endl;
+                out.flush();
                 out.close();
             }
         }

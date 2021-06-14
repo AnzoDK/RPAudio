@@ -52,12 +52,14 @@ namespace rp
         {
             m_printState = printState;
             m_target = target;
+            remove(m_logPath.c_str());
         }
         Logger(bool printState, LoggerTarget target, std::string logPath)
         {
             m_printState = printState;
             m_logPath = logPath;
             m_target = target;
+            remove(m_logPath.c_str());
         }
         void Log(std::string str, bool ignoreState=0)
         {

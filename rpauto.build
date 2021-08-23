@@ -1,4 +1,4 @@
-# Rosenørn Productions Auto Build Config
+# RP Auto Build Config
 OS={"Windows","Linux"};
 OS_COMPILER={"_null_","g++"};
 OS_TARGET={"default","default"};

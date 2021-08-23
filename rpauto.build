@@ -1,0 +1,34 @@
+# Rosenørn Productions Auto Build Config
+OS={"Windows","Linux"};
+OS_COMPILER={"_null_","g++"};
+OS_TARGET={"default","default"};
+ARCH={"x86_64"}
+# OS_MAKE_ARGS={"DEBUG_STATE=1","DEBUG_STATE=1"};
+SET_BUILD_VAR={"clean","true"};
+
+# Target Descriptions:
+
+# When no extention is specified the OS specific extention will be used
+# The value in the parenthesis is used to determine the type of target - "_final_" is used for a .exe/.out/.dll/.so file and "_obj_" is used for a .o file
+# - lib:_nolib_ is only needed for _final_ targets
+# "_depends_" is used to specify all targets build by this target
+# - link does not need to be specified if not needed
+
+__default__ (_final_) | __rptest__ | __commontools__ | __rpaudio__
+- lib:_nolib_
+- out:RPtest
+- in:_depends_
+- link:openal;ogg;vorbisfile
+- flags:g3;Wall;std=c++17;pthread
+
+__rptest__ (_obj_)
+- in:./src/rptest.cpp
+- flags:g3;Wall;std=c++17;pthread
+
+__rpaudio__ (_obj_)
+- in:./src/rpaudio.cpp
+- flags:g3;Wall;std=c++17;pthread
+
+__commontools__ (_obj_)
+- in:./src/commontools.cpp
+- flags:g3;Wall;std=c++17;pthread
